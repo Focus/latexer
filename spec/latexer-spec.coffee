@@ -1,6 +1,7 @@
 Latexer = require '../lib/latexer'
 LabelView = require '../lib/label-view'
 CiteView = require '../lib/cite-view'
+Citation = require '../lib/citation'
 
 # Use the command `window:run-package-specs` (cmd-alt-ctrl-p) to run specs.
 #
@@ -25,7 +26,7 @@ describe "Latexer", ->
       lv = new LabelView
 
       runs ->
-        expect(workspaceElement.querySelector('.latexer')).toExist()
+        expect(workspaceElement.querySelector('.latexer-view')).toExist()
 
         latexerElement = workspaceElement.querySelector('.latexer')
         expect(latexerElement).toExist()
@@ -34,6 +35,23 @@ describe "Latexer", ->
         expect(latexerPanel.isVisible()).toBe true
         lv.cancel()
         expect(latexerPanel.isVisible()).toBe false
+
+
+  describe "when a new citation is added", ->
+    it "extracts the correct values", ->
+      testCite = """
+      @test {key,
+      field0 = {vfield0},
+      field1 = {vfield1},
+      field2 = "vfield2",
+      field3 = "vfield3"
+      }
+      """
+      cite = new Citation
+      cite.parse(testCite)
+      expect(cite.get("key")).toBe "key"
+      for i in [0,1,2,3]
+        expect(cite.get("field#{i}")).toBe "vfield#{i}"
 ###
     it "hides and shows the view", ->
       # This test shows you an integration test testing at the view level.

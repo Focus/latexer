@@ -9,14 +9,19 @@ class LabelView extends SelectListView
   initialize: ->
     super
     @addClass('overlay from-top')
-    @previouslyFocusedElement = $(document.activeElement)
-    @editor = atom.workspace.getActivePaneItem()
-    if @editor?
-      labels = FindLabels.getLabelsByText(@editor.getText(), @editor.getPath())
-      @setItems(labels)
+
+  show: (editor) ->
+    return unless editor?
+    @editor = editor
+    labels = FindLabels.getLabelsByText(@editor.getText(), @editor.getPath())
+    @setItems(labels)
     @panel ?= atom.workspace.addModalPanel(item: this)
     @panel.show()
+    @storeFocusedElement()
     @focusFilterEditor()
+
+  hide: ->
+    @panel?.hide()
 
   getEmptyMessage: ->
     "No labels found"
@@ -27,11 +32,10 @@ class LabelView extends SelectListView
   viewForItem: ({label}) ->
      "<li>#{label}</li>"
 
-  cancel: ->
-    super
-    @panel?.hide()
-    @previouslyFocusedElement?.focus()
-
   confirmed: ({label}) ->
     @editor.insertText label
-    @cancel()
+    @restoreFocus()
+    @hide()
+  cancel: ->
+    super
+    @hide()

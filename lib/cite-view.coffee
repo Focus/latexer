@@ -11,12 +11,15 @@ class CiteView extends SelectListView
   initialize: ->
     super
     @addClass('overlay from-top')
-    @previouslyFocusedElement = $(document.activeElement)
-    @editor = atom.workspace.getActivePaneItem()
+
+  show: (editor) ->
+    return unless editor?
+    @editor = editor
     cites = @getCitations()
     @setItems(cites)
     @panel ?= atom.workspace.addModalPanel(item: this)
     @panel.show()
+    @storeFocusedElement()
     @focusFilterEditor()
 
   getEmptyMessage: ->
@@ -28,14 +31,16 @@ class CiteView extends SelectListView
   viewForItem: ({title, key, author}) ->
     "<li><span style='display:block;'>#{title}</span><span style='display:block;font-size:xx-small;'>#{author}</span></li>"
 
-  cancel: ->
-    super
+  hide: ->
     @panel?.hide()
-    @previouslyFocusedElement?.focus()
 
   confirmed: ({title, key, author}) ->
     @editor.insertText key
-    @cancel()
+    @restoreFocus()
+    @hide()
+  cancel: ->
+    super
+    @hide()
 
   getCitations: ->
     cites = []

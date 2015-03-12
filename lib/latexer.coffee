@@ -7,9 +7,13 @@ module.exports = Latexer =
   editor: null
   observe: null
   editorChange: null
+  cv: null
+  lv: null
   beginRex: /\\begin{([^}]+)}/
   refRex: /\\(ref|eqref|cite|textcite){$/
   activate: ->
+    lv = new LabelView
+    cv = new CiteView
     atom.workspace.observeTextEditors (editor) =>
       title = editor?.getTitle()
       return unless title? and title.match(/\.tex$/)
@@ -18,8 +22,8 @@ module.exports = Latexer =
         pos = @editor.getCursorBufferPosition().toArray()
         line = @editor.getTextInBufferRange([[pos[0], 0], pos])
         if (match = line.match(@refRex))
-          new LabelView if match[1] is "ref" or match[1] is "eqref"
-          new CiteView if match[1] is "cite" or match[1] is "textcite"
+          lv.show(@editor) if match[1] is "ref" or match[1] is "eqref"
+          cv.show(@editor) if match[1] is "cite" or match[1] is "textcite"
         #Check if the previous line contains a \beging{something} or \[.
         #If it does, try to find the closing item, and if that doesn't exist put it in.
         else if pos[0]>1
