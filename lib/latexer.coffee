@@ -40,7 +40,7 @@ module.exports = Latexer =
             if (not remainingText?) or (remainingText.indexOf(endText) < 0) or ((remainingText.indexOf(beginText) < remainingText.indexOf(endText)) and (remainingText.indexOf(beginText) > 0))
               @editor.insertText "\n"
               @editor.insertText endText
-              @editor.moveUp 1
+              @editor.moveUp 1            
 
   deactivate: ->
     @observe.dispose()

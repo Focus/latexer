@@ -8,7 +8,7 @@ class LabelView extends SelectListView
 
   initialize: ->
     super
-    @addClass('overlay from-top')
+    @addClass('overlay from-top label-view')
 
   show: (editor) ->
     return unless editor?
@@ -36,6 +36,7 @@ class LabelView extends SelectListView
     @editor.insertText label
     @restoreFocus()
     @hide()
+    
   cancel: ->
     super
     @hide()

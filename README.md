@@ -5,15 +5,21 @@ Laxer is a package to help you with your every day LaTex needs.
 Features
 --------
 
-Autocompletion of references when using `\ref{}`.
+####Reference autocompletion
   ![Autocompletion of references](https://github.com/Focus/latexer/blob/master/screenshots/ref.gif)
+Triggers:
+  * Typing in `\ref{` or `\eqref{`
+  * Deleting anything so that the left of the cursor reads `\ref{` or `\eqref{`, e.g. deleting the word 'something' from `\ref{something}`
 
-Autocompletion of citations from bibliography when using `\cite{}`.
-  ![Autocompletion of references](https://github.com/Focus/latexer/blob/master/screenshots/cite.gif)
 
-Closing off environments starting with `\begin{}` or `\[`.
-  ![Autocompletion of references](https://github.com/Focus/latexer/blob/master/screenshots/env.gif)
+####Bibliography autocompletion
+  ![Autocompletion of bibliography](https://github.com/Focus/latexer/blob/master/screenshots/cite.gif)
+Will scan through the file to find `\bibliography{mybib.bib}` and then scan through the file named `mybib.bib` to get the citations.
+Triggers:
+  * Typing in `\cite{` or `\textcite{`
+  * Deleting anything so that the left of the cursor reads `\cite{` or `\textcite{`, e.g. deleting the word 'something' from `\cite{something}`
 
-Status
-------
-Currently in alpha stage. I am sure there are lots of bugs.
+#####Environment autocompletion
+  ![Autocompletion of environments](https://github.com/Focus/latexer/blob/master/screenshots/env.gif)
+Triggers:
+  * Having an unmatched `\begin{env_name}` or `\[` in the line above.

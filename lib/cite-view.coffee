@@ -10,7 +10,7 @@ class CiteView extends SelectListView
 
   initialize: ->
     super
-    @addClass('overlay from-top')
+    @addClass('overlay from-top cite-view')
 
   show: (editor) ->
     return unless editor?

@@ -2,42 +2,18 @@ Latexer = require '../lib/latexer'
 LabelView = require '../lib/label-view'
 CiteView = require '../lib/cite-view'
 Citation = require '../lib/citation'
+FindLabels = require '../lib/find-labels'
 
-# Use the command `window:run-package-specs` (cmd-alt-ctrl-p) to run specs.
-#
-# To run a specific `it` or `describe` block add an `f` to the front (e.g. `fit`
-# or `fdescribe`). Remove the `f` to unfocus the block.
+describe "Latexer Parsers", ->
 
-describe "Latexer", ->
-  [workspaceElement] = []
+  describe "finding labels", ->
+    it "gets the correct labels", ->
+      text = "\\label{value0} some text \\label{value1} \\other{things} \\label{value2}"
+      labels = FindLabels.getLabelsByText(text)
+      for label, i in labels
+        expect(label.label).toBe "value#{i}"
 
-  beforeEach ->
-    workspaceElement = atom.views.getView(atom.workspace)
-    waitsForPromise -> atom.packages.activatePackage('latexer')
-
-  describe "when the label view is triggers", ->
-    it "hides and shows the modal panel", ->
-      # Before the activation event the view is not on the DOM, and no panel
-      # has been created
-      expect(workspaceElement.querySelector('.latexer')).not.toExist()
-
-      # This is an activation event, triggering it will cause the package to be
-      # activated.
-      lv = new LabelView
-
-      runs ->
-        expect(workspaceElement.querySelector('.latexer-view')).toExist()
-
-        latexerElement = workspaceElement.querySelector('.latexer')
-        expect(latexerElement).toExist()
-
-        latexerPanel = atom.workspace.panelForItem(latexerElement)
-        expect(latexerPanel.isVisible()).toBe true
-        lv.cancel()
-        expect(latexerPanel.isVisible()).toBe false
-
-
-  describe "when a new citation is added", ->
+  describe "new citation is created", ->
     it "extracts the correct values", ->
       testCite = """
       @test {key,
@@ -52,29 +28,38 @@ describe "Latexer", ->
       expect(cite.get("key")).toBe "key"
       for i in [0,1,2,3]
         expect(cite.get("field#{i}")).toBe "vfield#{i}"
-###
-    it "hides and shows the view", ->
-      # This test shows you an integration test testing at the view level.
 
-      # Attaching the workspaceElement to the DOM is required to allow the
-      # `toBeVisible()` matchers to work. Anything testing visibility or focus
-      # requires that the workspaceElement is on the DOM. Tests that attach the
-      # workspaceElement to the DOM are generally slower than those off DOM.
+describe "Label View", ->
+  [workspaceElement, editor, lv] = []
+
+  labelText = "\\label{value}\\ref{"
+
+  beforeEach ->
+    workspaceElement = atom.views.getView(atom.workspace)
+    activationPromise = null
+
+    waitsForPromise ->
+      atom.workspace.open("sample.tex")
+
+    runs ->
+      editor = atom.workspace.getActiveTextEditor()
+      activationPromise = atom.packages.activatePackage("latexer")
+      editor.setText labelText
+      lv = new LabelView
+      lv.show(editor)
+
       jasmine.attachToDOM(workspaceElement)
 
-      expect(workspaceElement.querySelector('.latexer')).not.toExist()
+    waitsForPromise ->
+      activationPromise
 
-      # This is an activation event, triggering it causes the package to be
-      # activated.
-      atom.commands.dispatch workspaceElement, 'latexer:toggle'
-
-      waitsForPromise ->
-        activationPromise
-
-      runs ->
-        # Now we can test for view visibility
-        latexerElement = workspaceElement.querySelector('.latexer')
-        expect(latexerElement).toBeVisible()
-        atom.commands.dispatch workspaceElement, 'latexer:toggle'
-        expect(latexerElement).not.toBeVisible()
-###
+  describe "typing \\ref{", ->
+    it "shows the list with references", ->
+      labelElement = workspaceElement.querySelector('.label-view')
+      expect(labelElement).toExist()
+      displayedLabels = labelElement.querySelectorAll('li')
+      expect(displayedLabels.length).toBe 1
+      expect(displayedLabels[0].textContent).toBe "value"
+    it "pastes the label in", ->
+      lv.confirmed({label:"value"})
+      expect(editor.getText()).toBe "#{labelText}value"
