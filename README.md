@@ -2,6 +2,9 @@
 
 Laxer is a package to help you with your every day LaTex needs.
 
+-----------
+![Build status](https://travis-ci.org/Focus/latexer.svg?branch=master)
+
 Features
 --------
 
