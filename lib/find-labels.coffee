@@ -1,5 +1,5 @@
 fsPlus = require 'fs-plus'
-fs = require 'fs'
+fs = require 'fs-plus'
 path = require 'path'
 
 module.exports =

@@ -1,7 +1,7 @@
 {SelectListView, $, $$} = require 'atom-space-pen-views'
 Citation = require './citation'
 FindLabels = require './find-labels'
-fs = require 'fs'
+fs = require 'fs-plus'
 
 module.exports =
 class CiteView extends SelectListView
