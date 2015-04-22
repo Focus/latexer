@@ -46,13 +46,19 @@ class CiteView extends SelectListView
     cites = []
     bibRex = /\\bibliography{([^}]+)}/g
     while (match = bibRex.exec(@editor.getText()))
+      if not /\.bib$/.test(match[1])
+        match[1] += ".bib"
       path = FindLabels.getAbsolutePath(@editor.getPath(), match[1])
       cites = cites.concat(@getCitationsFromPath(path))
     cites
 
   getCitationsFromPath: (path) ->
     cites = []
-    text = fs.readFileSync(path).toString()
+    text = null
+    try text = fs.readFileSync(path).toString()
+    catch error
+       console.log(error)
+       return []
     return [] unless text?
     text = text.replace(/(\r\n|\n|\r)/gm,"")
     textSplit = text.split("@")
