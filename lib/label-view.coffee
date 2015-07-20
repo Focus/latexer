@@ -1,5 +1,6 @@
 {$,SelectListView} = require 'atom-space-pen-views'
 FindLabels = require './find-labels'
+fs = require 'fs-plus'
 
 module.exports =
 class LabelView extends SelectListView
@@ -13,7 +14,17 @@ class LabelView extends SelectListView
   show: (editor) ->
     return unless editor?
     @editor = editor
-    labels = FindLabels.getLabelsByText(@editor.getText(), @editor.getPath())
+    texRootRex = /%!TEX root = (.+)/g
+    while(match = texRootRex.exec(@editor.getText()))
+      absolutFilePath = FindLabels.getAbsolutePath(@editor.getPath(), match[1])
+      try 
+        text = fs.readFileSync(absolutFilePath).toString()
+        labels = FindLabels.getLabelsByText(text, absolutFilePath)
+      catch error
+        atom.notifications.addError('could not load content of '+ absolutFilePath, { dismissable: true })
+        console.log(error)
+    if labels == undefined or labels.length == 0
+      labels = FindLabels.getLabelsByText(@editor.getText(), @editor.getPath())
     @setItems(labels)
     @panel ?= atom.workspace.addModalPanel(item: this)
     @panel.show()
