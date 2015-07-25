@@ -52,13 +52,15 @@ class CiteView extends SelectListView
 
   getBibFiles: ->
     basePath = @editor.getPath()
+    if basePath.lastIndexOf("/") isnt -1
+      basePath = basePath.substring 0, basePath.lastIndexOf("/")
     bibFiles = @getBibFileFromText(@editor.getText())
     if bibFiles == null or bibFiles.length == 0
       texRootRex = /%!TEX root = (.+)/g
       while(match = texRootRex.exec(@editor.getText()))
         absolutFilePath = FindLabels.getAbsolutePath(@editor.getPath(), match[1])
         basePath = pathModule.dirname(absolutFilePath)
-        try 
+        try
           text = fs.readFileSync(absolutFilePath).toString()
           bibFiles = @getBibFileFromText(text) #todo append basePath to each BibFiles in
           if bibFiles != null and bibFiles.length != 0
