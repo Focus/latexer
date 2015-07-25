@@ -45,7 +45,7 @@ module.exports =
         @lv.show(@editor)
       else if (match = line.match(@citeRex))
         @cv.show(@editor)
-      #Check if the previous line contains a \beging{something} or \[.
+      #Check if the previous line contains a \begin{something} or \[.
       #If it does, try to find the closing item, and if that doesn't exist put it in.
       else if pos[0]>1
         previousLine = @editor.lineTextForBufferRow(pos[0]-1)
@@ -58,6 +58,8 @@ module.exports =
           else
             beginText = "\\begin{#{match[1]}}"
             endText = "\\end{#{match[1]}}"
+          remainingOnPrevLine = previousLine.substring(previousLine.indexOf(beginText))
+          return if remainingOnPrevLine.indexOf(endText) isnt -1
           if (not remainingText?) or (remainingText.indexOf(endText) < 0) or ((remainingText.indexOf(beginText) < remainingText.indexOf(endText)) and (remainingText.indexOf(beginText) > 0))
             @editor.insertText "\n"
             @editor.insertText endText
