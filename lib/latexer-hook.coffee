@@ -5,7 +5,7 @@ CiteView = require './cite-view'
 module.exports =
   class LatexerHook
     beginRex: /\\begin{([^}]+)}/
-    refRex: /\\(ref|eqref|cite|textcite){$/
+    refRex: /\\(ref|eqref|cref|cite|textcite){$/
     constructor: (@editor) ->
       @disposables = new CompositeDisposable
       @disposables.add @editor.onDidChangeTitle => @subscribeBuffer()
@@ -41,7 +41,7 @@ module.exports =
       pos = @editor.getCursorBufferPosition().toArray()
       line = @editor.getTextInBufferRange([[pos[0], 0], pos])
       if (match = line.match(@refRex))
-        @lv.show(@editor) if match[1] is "ref" or match[1] is "eqref"
+        @lv.show(@editor) if match[1] is "ref" or match[1] is "eqref" or match[1] is "cref"
         @cv.show(@editor) if match[1] is "cite" or match[1] is "textcite"
       #Check if the previous line contains a \beging{something} or \[.
       #If it does, try to find the closing item, and if that doesn't exist put it in.
