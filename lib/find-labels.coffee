@@ -16,6 +16,8 @@ FindLabels =
     matches
 
   getLabels: (file) ->
+    if not fsPlus.isFileSync(file) #if file is not there try add possible extensions
+      file = fsPlus.resolveExtension(file, ['tex'])
     return [] unless fsPlus.isFileSync(file)
     text = fs.readFileSync(file).toString()
     @getLabelsByText(text, file)

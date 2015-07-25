@@ -2,6 +2,7 @@
 Citation = require './citation'
 FindLabels = require './find-labels'
 fs = require 'fs-plus'
+pathModule = require 'path'
 
 module.exports =
 class CiteView extends SelectListView
@@ -44,13 +45,41 @@ class CiteView extends SelectListView
 
   getCitations: ->
     cites = []
-    bibRex = /\\bibliography{([^}]+)}/g
-    while (match = bibRex.exec(@editor.getText()))
+    bibFiles = @getBibFiles()
+    for bibFile in bibFiles
+      cites = cites.concat(@getCitationsFromPath(bibFile))
+    cites
+
+  getBibFiles: ->
+    basePath = @editor.getPath()
+    bibFiles = @getBibFileFromText(@editor.getText())
+    if bibFiles == null or bibFiles.length == 0
+      texRootRex = /%!TEX root = (.+)/g
+      while(match = texRootRex.exec(@editor.getText()))
+        absolutFilePath = FindLabels.getAbsolutePath(@editor.getPath(), match[1])
+        basePath = pathModule.dirname(absolutFilePath)
+        try 
+          text = fs.readFileSync(absolutFilePath).toString()
+          bibFiles = @getBibFileFromText(text) #todo append basePath to each BibFiles in
+          if bibFiles != null and bibFiles.length != 0
+            break
+        catch error
+          atom.notifications.addError('could not load content '+ match[1], { dismissable: true })
+          console.log(error)
+    result = []
+    basePath = basePath + pathModule.sep
+    for bfpath in bibFiles
+      result = result.concat(FindLabels.getAbsolutePath(basePath, bfpath) )
+    result
+
+  getBibFileFromText: (text) ->
+    bibFiles = []
+    bibRex = /\\(?:bibliography|addbibresource|addglobalbib){([^}]+)}/g
+    while( match = bibRex.exec(text) ) #try editor text for bibfile
       if not /\.bib$/.test(match[1])
         match[1] += ".bib"
-      path = FindLabels.getAbsolutePath(@editor.getPath(), match[1])
-      cites = cites.concat(@getCitationsFromPath(path))
-    cites
+      bibFiles = bibFiles.concat(match[1])
+    bibFiles
 
   getCitationsFromPath: (path) ->
     cites = []
