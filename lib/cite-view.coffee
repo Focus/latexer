@@ -78,9 +78,11 @@ class CiteView extends SelectListView
     bibFiles = []
     bibRex = /\\(?:bibliography|addbibresource|addglobalbib){([^}]+)}/g
     while( match = bibRex.exec(text) ) #try editor text for bibfile
-      if not /\.bib$/.test(match[1])
-        match[1] += ".bib"
-      bibFiles = bibFiles.concat(match[1])
+      foundBibs = match[1].split ","
+      for found in foundBibs
+        if not /\.bib$/.test(found)
+          found += ".bib"
+        bibFiles = bibFiles.concat(found)
     bibFiles
 
   getCitationsFromPath: (path) ->
