@@ -5,8 +5,8 @@ CiteView = require './cite-view'
 module.exports =
   class LatexerHook
     beginRex: /\\begin{([^}]+)}/
-    refRex: /\\(ref|eqref|[cCvV]ref){$/
-    citeRex: /\\(cite|textcite|citet|citep|citet\*|citep\*)(\[[^\]]+\])?{$/
+    refRex: /\\(ref|eqref|[cCvV]ref)({|{[^}]+,)$/
+    citeRex: /\\(cite|textcite|citet|citep|citet\*|citep\*)(\[[^\]]+\])?({|{[^}]+,)$/
     constructor: (@editor) ->
       @disposables = new CompositeDisposable
       @disposables.add @editor.onDidChangeTitle => @subscribeBuffer()
