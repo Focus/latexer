@@ -100,5 +100,8 @@ class CiteView extends SelectListView
       continue unless cite?
       ct = new Citation
       ct.parse(cite)
-      cites.push({title: ct.get("title"), key: ct.get("key"), author: ct.get("author"), filterKey: ct.get("author") + " " + ct.get("title")})
+      filter = ""
+      for key in atom.config.get("latexer.parametersToSearchCitationsBy")
+        filter += ct.get(key) + " "
+      cites.push({title: ct.get("title"), key: ct.get("key"), author: ct.get("author"), filterKey: filter})
     cites
