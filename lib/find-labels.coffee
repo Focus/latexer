@@ -23,6 +23,6 @@ FindLabels =
     @getLabelsByText(text, file)
 
   getAbsolutePath: (file, relativePath) ->
-    if (ind = file.lastIndexOf("/")) isnt file.length
+    if (ind = file.lastIndexOf(path.sep)) isnt file.length
       file = file.substring(0,ind)
     path.resolve(file, relativePath)
