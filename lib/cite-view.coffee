@@ -51,14 +51,17 @@ class CiteView extends SelectListView
     cites
 
   getBibFiles: ->
-    basePath = @editor.getPath()
-    if basePath.lastIndexOf("/") isnt -1
-      basePath = basePath.substring 0, basePath.lastIndexOf("/")
+    editor = atom.workspace.getActivePaneItem()
+    file = editor?.buffer?.file
+    basePath = file?.path
+    activePaneItemPath = basePath
+    if basePath.lastIndexOf(pathModule.sep) isnt -1
+      basePath = basePath.substring 0, basePath.lastIndexOf(pathModule.sep)
     bibFiles = @getBibFileFromText(@editor.getText())
     if bibFiles == null or bibFiles.length == 0
       texRootRex = /%!TEX root = (.+)/g
       while(match = texRootRex.exec(@editor.getText()))
-        absolutFilePath = FindLabels.getAbsolutePath(@editor.getPath(), match[1])
+        absolutFilePath = FindLabels.getAbsolutePath(activePaneItemPath,match[1])
         basePath = pathModule.dirname(absolutFilePath)
         try
           text = fs.readFileSync(absolutFilePath).toString()
