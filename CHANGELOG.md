@@ -1,5 +1,7 @@
 ## 0.2.5
 * Added support for searching citations by different parameters
+* Comma separated ref/cite support
+* Fixed issues with paths on Windows
 
 ## 0.2.4
 * Allowing multiple bibtex files from bibliography{bib1,bib2}
