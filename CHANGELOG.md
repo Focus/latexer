@@ -1,6 +1,6 @@
 ## 0.2.5
 * Added support for searching citations by different parameters
-* Comma separated ref/cite support
+* Added support for comma seperated citations/references
 * Fixed issues with paths on Windows
 
 ## 0.2.4
