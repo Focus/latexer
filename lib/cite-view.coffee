@@ -59,9 +59,9 @@ class CiteView extends SelectListView
       basePath = basePath.substring 0, basePath.lastIndexOf(pathModule.sep)
     bibFiles = @getBibFileFromText(@editor.getText())
     if bibFiles == null or bibFiles.length == 0
-      texRootRex = /%!TEX root = (.+)/g
+      texRootRex = /%(\s+)?!TEX root(\s+)?=(\s+)?(.+)/g
       while(match = texRootRex.exec(@editor.getText()))
-        absolutFilePath = FindLabels.getAbsolutePath(activePaneItemPath,match[1])
+        absolutFilePath = FindLabels.getAbsolutePath(activePaneItemPath,match[4])
         basePath = pathModule.dirname(absolutFilePath)
         try
           text = fs.readFileSync(absolutFilePath).toString()
@@ -69,7 +69,7 @@ class CiteView extends SelectListView
           if bibFiles != null and bibFiles.length != 0
             break
         catch error
-          atom.notifications.addError('could not load content '+ match[1], { dismissable: true })
+          atom.notifications.addError('could not load content '+ match[4], { dismissable: true })
           console.log(error)
     result = []
     basePath = basePath + pathModule.sep
