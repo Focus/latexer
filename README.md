@@ -10,8 +10,8 @@ Features
 ####Reference autocompletion
   ![Autocompletion of references](https://github.com/Focus/latexer/raw/master/screenshots/ref.gif)
 Triggers:
-  * Typing in `\ref{` or `\eqref{`
-  * Deleting anything so that the left of the cursor reads `\ref{` or `\eqref{`, e.g. deleting the word 'something' from `\ref{something}`
+  * Typing in `\ref{`, `\eqref{` or any control sequences that ends in `ref{`
+  * Deleting anything so that the left of the cursor reads `\ref{`, `\eqref{`, and the like. E.g. deleting the word 'something' from `\pageref{something}`
 
 
 ####Bibliography autocompletion
