@@ -17,6 +17,3 @@ module.exports = Latexer =
       new LatexerHook(editor)
 
   deactivate: ->
-
-  serialize: ->
-    latexerViewState: @latexerView.serialize()

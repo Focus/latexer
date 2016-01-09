@@ -1,3 +1,8 @@
+##0.2.8
+* Trigger on any reference
+* Small bug fixes
+
+
 ## 0.2.5
 * Added support for searching citations by different parameters
 * Added support for comma seperated citations/references
