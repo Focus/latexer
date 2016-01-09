@@ -5,7 +5,7 @@ CiteView = require './cite-view'
 module.exports =
   class LatexerHook
     beginRex: /\\begin{([^}]+)}/
-    refRex: /\\(ref|eqref|[cCvV]ref)({|{[^}]+,)$/
+    refRex: /\\\w*ref({|{[^}]+,)$/
     citeRex: /\\(cite|textcite|onlinecite|citet|citep|citet\*|citep\*)(\[[^\]]+\])?({|{[^}]+,)$/
     constructor: (@editor) ->
       @disposables = new CompositeDisposable
@@ -49,7 +49,7 @@ module.exports =
       #If it does, try to find the closing item, and if that doesn't exist put it in.
       else if pos[0]>1
         previousLine = @editor.lineTextForBufferRow(pos[0]-1)
-        if (match = @beginRex.exec(previousLine)) or (match = /\\\[/.exec(previousLine))
+        if (match = @beginRex.exec(previousLine)) or (match = /\\\[\h*?$/.exec(previousLine))
           lineCount = @editor.getLineCount()
           remainingText = @editor.getTextInBufferRange([[pos[0],0],[lineCount+1,0]])
           if match[0] is "\\["

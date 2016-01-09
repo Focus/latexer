@@ -1,7 +1,6 @@
 ##0.2.8
-* Trigger on any reference
+* Generalized \ref matching to include any control sequence that ends in `ref`
 * Small bug fixes
-
 
 ## 0.2.5
 * Added support for searching citations by different parameters
