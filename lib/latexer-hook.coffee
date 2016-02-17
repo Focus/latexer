@@ -64,10 +64,7 @@ module.exports =
           return
         lineCount = @editor.getLineCount()
         preText= @editor.getTextInBufferRange([[0,0], [pos[0],0]])
-        if pos[0] < lineCount
-          remainingText = @editor.getTextInBufferRange([[pos[0]+1,0],[lineCount+1,0]])
-        else
-          remainingText = ""
+        remainingText = @editor.getTextInBufferRange([[pos[0],0],[lineCount+1,0]])
         balanceBefore = (preText.match(beginTextRex)||[]).length - (preText.match(endTextRex)||[]).length
         balanceAfter = (remainingText.match(beginTextRex)||[]).length - (remainingText.match(endTextRex)||[]).length
         remainingOnPrevLine = previousLine.substring(previousLine.indexOf(beginText))
