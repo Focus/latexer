@@ -53,21 +53,23 @@ module.exports =
         if (match = @beginRex.exec(previousLine))
           beginText = "\\begin{#{match[1]}}"
           endText = "\\end{#{match[1]}}"
-          beginTextRex = new RegExp "^([^%\\\\]+)?"+beginText.replace(/([()[{*+.$^\\|?])/g, "\\$1"), "gm"
-          endTextRex = new RegExp "^([^%\\\\]+)?"+endText.replace(/([()[{*+.$^\\|?])/g, "\\$1"), "gm"
+          beginTextRex = new RegExp beginText.replace(/([()[{*+.$^\\|?])/g, "\\$1"), "gm"
+          endTextRex = new RegExp endText.replace(/([()[{*+.$^\\|?])/g, "\\$1"), "gm"
         else if (match = @mathRex.exec(previousLine)) and match[1].length % 2
           beginText = "\\["
           endText = "\\]"
-          beginTextRex = new RegExp "^([^%\\\\]+)?\\\\\\[", "gm"
-          endTextRex = new RegExp "^([^%\\\\]+)?\\\\\\]", "gm"
+          beginTextRex = new RegExp "\\\\\\[", "gm"
+          endTextRex = new RegExp "\\\\\\]", "gm"
         else
           return
         lineCount = @editor.getLineCount()
-        preText= @editor.getTextInBufferRange([[0,0], [pos[0],0]])
-        remainingText = @editor.getTextInBufferRange([[pos[0],0],[lineCount+1,0]])
+        preText= @editor.getTextInBufferRange([[0,0], [pos[0],0]]).replace /%.+$/gm,""
+        remainingText = @editor.getTextInBufferRange([[pos[0],0],[lineCount+1,0]]).replace /%.+$/gm,""
         balanceBefore = (preText.match(beginTextRex)||[]).length - (preText.match(endTextRex)||[]).length
         balanceAfter = (remainingText.match(beginTextRex)||[]).length - (remainingText.match(endTextRex)||[]).length
-        return if balanceBefore + balanceAfter isnt 1
-        @editor.insertText "\n"
+        return if balanceBefore + balanceAfter < 1
+        posBefore = @editor.getCursorBufferPosition()
         @editor.insertText endText
         @editor.moveUp 1
+        @editor.moveToEndOfLine()
+        @editor.insertText "\n"
