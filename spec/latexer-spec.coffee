@@ -17,13 +17,13 @@ describe "Latexer", ->
   describe "new citation is created", ->
     it "extracts the correct values", ->
       testCite = """
-      @test {key,
-      field0 = {vfield0},
-      field1 = {vfield1},
-      field2 = "vfield2",
-      field3 = "vfield3"
-      }
-      """
+                 @test {key,
+                 field0 = {vfield0},
+                 field1 = {vfield1},
+                 field2 = "vfield2",
+                 field3 = "vfield3"
+                 }
+                 """
       cite = new Citation
       cite.parse(testCite)
       expect(cite.get("key")).toBe "key"
@@ -88,3 +88,37 @@ describe "Latexer", ->
           expect(info.length).toBe 2
           expect(info[0].textContent).toBe "title#{i}"
           expect(info[1].textContent).toBe "author#{i}"
+
+  describe "typing \\begin{evironment} or \\[", ->
+    [workspaceElement, editor] = []
+    beforeEach ->
+      runs ->
+        workspaceElement = atom.views.getView(atom.workspace)
+      waitsFor ->
+        workspaceElement
+      runs ->
+        jasmine.attachToDOM(workspaceElement)
+      waitsForPromise ->
+        atom.workspace.open("sample.tex")
+      waitsFor ->
+        editor = atom.workspace.getActiveTextEditor()
+      waitsForPromise ->
+        atom.packages.activatePackage("latexer")
+    it "autocompletes the environment", ->
+      editor.setText "\\begin{env}\n"
+      advanceClock(editor.getBuffer().getStoppedChangingDelay())
+      expect(editor.getText()).toBe "\\begin{env}\n\n\\end{env}"
+      editor.setText "\\[\n"
+      advanceClock(editor.getBuffer().getStoppedChangingDelay())
+      expect(editor.getText()).toBe "\\[\n\n\\]"
+    it "ignores comments", ->
+      editor.setText "%\\begin{env}\n"
+      advanceClock(editor.getBuffer().getStoppedChangingDelay())
+      expect(editor.getText()).toBe "%\\begin{env}\n"
+      editor.setText "%\\[\n"
+      advanceClock(editor.getBuffer().getStoppedChangingDelay())
+      expect(editor.getText()).toBe "%\\[\n"
+    it "ignores extra backslashes for \\[", ->
+      editor.setText "\\\\[\n"
+      advanceClock(editor.getBuffer().getStoppedChangingDelay())
+      expect(editor.getText()).toBe "\\\\[\n"
