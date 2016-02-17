@@ -1,4 +1,5 @@
 ##0.2.8
+* New autocomplete system for environments that ignores comments and implements nesting
 * Generalized \ref matching to include any control sequence that ends in `ref`
 * Small bug fixes
 
