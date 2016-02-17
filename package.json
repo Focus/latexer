@@ -5,6 +5,12 @@
   "description": "Adds LaTex autocompletion for Atom.io",
   "repository": "https://github.com/Focus/latexer",
   "license": "MIT",
+  "keywords": [
+    "tex",
+    "latex",
+    "bibtex",
+    "autocomplete"
+  ],
   "engines": {
     "atom": ">=0.174.0 <2.0.0"
   },

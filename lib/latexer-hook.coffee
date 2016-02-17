@@ -48,8 +48,9 @@ module.exports =
         @cv.show(@editor)
       #Check if the previous line contains a \begin{something} or \[.
       #If it does, try to find the closing item, and if that doesn't exist put it in.
-      else if pos[0]>1
+      else if pos[0]>0
         previousLine = @editor.lineTextForBufferRow(pos[0]-1)
+        console.log previousLine
         if (match = @beginRex.exec(previousLine))
           beginText = "\\begin{#{match[1]}}"
           endText = "\\end{#{match[1]}}"
