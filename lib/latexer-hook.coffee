@@ -53,8 +53,8 @@ module.exports =
         if (match = @beginRex.exec(previousLine))
           beginText = "\\begin{#{match[1]}}"
           endText = "\\end{#{match[1]}}"
-          beginTextRex = new RegExp "^([^%\\\\]+)?\\"+beginText, "gm"
-          endTextRex = new RegExp "^([^%\\\\]+)?\\"+endText, "gm"
+          beginTextRex = new RegExp "^([^%\\\\]+)?"+beginText.replace(/([()[{*+.$^\\|?])/g, "\\$1"), "gm"
+          endTextRex = new RegExp "^([^%\\\\]+)?"+endText.replace(/([()[{*+.$^\\|?])/g, "\\$1"), "gm"
         else if (match = @mathRex.exec(previousLine)) and match[1].length % 2
           beginText = "\\["
           endText = "\\]"
@@ -67,7 +67,6 @@ module.exports =
         remainingText = @editor.getTextInBufferRange([[pos[0],0],[lineCount+1,0]])
         balanceBefore = (preText.match(beginTextRex)||[]).length - (preText.match(endTextRex)||[]).length
         balanceAfter = (remainingText.match(beginTextRex)||[]).length - (remainingText.match(endTextRex)||[]).length
-        remainingOnPrevLine = previousLine.substring(previousLine.indexOf(beginText))
         return if balanceBefore + balanceAfter isnt 1
         @editor.insertText "\n"
         @editor.insertText endText

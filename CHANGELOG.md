@@ -1,4 +1,8 @@
-##0.2.8
+## 0.2.9
+* Small bug fixes
+* Sorted out README
+
+## 0.2.8
 * New autocomplete system for environments that ignores comments and implements nesting
 * Generalized \ref matching to include any control sequence that ends in `ref`
 * Small bug fixes

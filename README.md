@@ -7,14 +7,14 @@ Laxer is a package to help you with your every day LaTex needs.
 Features
 --------
 
-####Reference autocompletion
+#### Reference autocompletion
   ![Autocompletion of references](https://github.com/Focus/latexer/raw/master/screenshots/ref.gif)
 Triggers:
   * Typing in `\ref{`, `\eqref{` or any control sequences that ends in `ref{`
   * Deleting anything so that the left of the cursor reads `\ref{`, `\eqref{`, and the like. E.g. deleting the word 'something' from `\pageref{something}`
 
 
-####Bibliography autocompletion
+#### Bibliography autocompletion
   ![Autocompletion of bibliography](https://github.com/Focus/latexer/raw/master/screenshots/cite.gif)
 Will scan through the file to find `\bibliography{mybib1.bib, mybib2}` and then scan through the file named `mybib1.bib` and `mymbib2.bib` to get the citations.
 Triggers:
@@ -28,7 +28,7 @@ For **multifile** support, from the child files use `%!TEX root = mainfile.tex` 
 You can edit from the preferences window which parameters you would like to search the bibliographies by. The default is `title,author`, for example `key,year` will search through entries by their key, i.e. `@key{...}`, and the year it was published.
 
 
-#####Environment autocompletion
+##### Environment autocompletion
   ![Autocompletion of environments](https://github.com/Focus/latexer/raw/master/screenshots/env.gif)
 Triggers:
   * Having an unmatched `\begin{env_name}` or `\[` in the line above.
