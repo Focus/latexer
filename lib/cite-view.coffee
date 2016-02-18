@@ -104,7 +104,7 @@ class CiteView extends SelectListView
       ct = new Citation
       ct.parse(cite)
       filter = ""
-      for key in atom.config.get("latexer.parametersToSearchCitationsBy")
+      for key in atom.config.get("latexer.parameters_to_search_citations_by")
         filter += ct.get(key) + " "
       cites.push({title: ct.get("title"), key: ct.get("key"), author: ct.get("author"), filterKey: filter})
     cites
