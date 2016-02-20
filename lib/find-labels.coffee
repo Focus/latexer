@@ -5,7 +5,7 @@ path = require 'path'
 module.exports =
 FindLabels =
   getLabelsByText: (text, file = "") ->
-    labelRex = /\\label{([^}]+)}/g
+    labelRex = /\\(?:th)?label{([^}]+)}/g
     matches = []
     while (match = labelRex.exec(text))
       matches.push {label: match[1]}
