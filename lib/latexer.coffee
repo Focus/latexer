@@ -39,3 +39,4 @@ module.exports = Latexer =
       @latexHook = new LatexerHook(editor)
 
   deactivate: ->
+    @latexHook.destroy()
