@@ -14,7 +14,7 @@ module.exports = Latexer =
 
     directories_to_search_bib_in:
       type: "array"
-      default: ["C:\\texlive\\texmf-local\\bibtex\\bib\\"]
+      default: []
       items:
         type: "string"
 
