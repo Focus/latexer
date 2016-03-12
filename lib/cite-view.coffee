@@ -75,6 +75,8 @@ class CiteView extends SelectListView
     basePath = basePath + pathModule.sep
     for bfpath in bibFiles
       result = result.concat(FindLabels.getAbsolutePath(basePath, bfpath) )
+      for bibDir in atom.config.get("latexer.directories_to_search_bib_in")
+        result = result.concat(FindLabels.getAbsolutePath(bibDir, bfpath) )
     result
 
   getBibFileFromText: (text) ->
