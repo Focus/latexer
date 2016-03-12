@@ -9,7 +9,8 @@ describe "Latexer", ->
 
   describe "finding labels", ->
     it "gets the correct labels", ->
-      text = "\\label{value0} some text \\label{value1} \\other{things} \\label{value2}"
+      text = "\\label{value0} some text
+              \\label{value1} \\other{things} \\label{value2}"
       labels = FindLabels.getLabelsByText(text)
       for label, i in labels
         expect(label.label).toBe "value#{i}"
