@@ -12,6 +12,12 @@ module.exports = Latexer =
       items:
         type: "string"
 
+    directories_to_search_bib_in:
+      type: "array"
+      default: ["C:\\texlive\\texmf-local\\bibtex\\bib\\"]
+      items:
+        type: "string"
+
     autocomplete_environments:
       type: "boolean"
       default: true
