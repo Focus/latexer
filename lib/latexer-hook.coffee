@@ -6,7 +6,7 @@ module.exports =
   class LatexerHook
     beginRex: /\\begin{([^}]+)}/
     mathRex: /(\\+)\[/
-    refRex: /\\\w*ref({|{[^}]+,)$/
+    refRex: /\\(\w*ref({|{[^}]+,)|[cC](page)?refrange({[^,}]*})?{)$/
     citeRex: /\\(cite|textcite|onlinecite|citet|citep|citet\*|citep\*)(\[[^\]]+\])?({|{[^}]+,)$/
     constructor: (@editor) ->
       @disposables = new CompositeDisposable
