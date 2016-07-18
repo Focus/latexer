@@ -7,10 +7,7 @@ module.exports =
     beginRex: /\\begin{([^}]+)}/
     mathRex: /(\\+)\[/
     refRex: /\\\w*ref({|{[^}]+,)$/
-    # Enhance the reference autocompletion trigger by typing in any control sequences
-    # that ends in cite{, citet{, citet*{, citep{ or citep*{
     citeRex: /\\\w*(cite|citet|citep|citet\*|citep\*)(\[[^\]]+\])?({|{[^}]+,)$/
-    # citeRex: /\\(cite|textcite|onlinecite|citet|citep|citet\*|citep\*)(\[[^\]]+\])?({|{[^}]+,)$/
     constructor: (@editor) ->
       @disposables = new CompositeDisposable
       @disposables.add @editor.onDidChangeTitle => @subscribeBuffer()
