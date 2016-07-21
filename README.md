@@ -1,6 +1,6 @@
 # latexer
 
-Laxer is a package to help you with your every day LaTex needs. It does reference, citation and environment autocompletion on the fly or at the touch of a keystroke.
+Latexer is a package to help you with your every day LaTeX needs. It does reference, citation and environment autocompletion on the fly or at the touch of a keystroke.
 
 [![Build Status](https://travis-ci.org/Focus/latexer.svg?branch=master)](https://travis-ci.org/Focus/latexer)
 
@@ -21,7 +21,7 @@ Triggers:
   * Typing in `\cite{`, `\textcite{`, `\citet{`, `\citet*{`, `\citep{` or `\citep*{`. You can also write something in square brackets before, e.g. `\cite[Theorem 1]{`.
   * Deleting anything so that the left of the cursor reads `\cite{`, `\textcite{`, `\citet{`, `\citet*{`, `\citep{` or `\citep*{`, e.g. deleting the word 'something' from `\cite{something}`
 
-Will look for Bibtex files given in the current file of the form `\bibliography`, `\addbibresource` and `\addglobalbib`.
+Will look for BibTeX files given in the current file of the form `\bibliography`, `\addbibresource` and `\addglobalbib`.
 
 You can edit from the preferences window which parameters you would like to search the bibliographies by. The default is `title,author`, for example `key,year` will search through entries by their key, i.e. `@key{...}`, and the year it was published.
 
@@ -48,7 +48,7 @@ You can switch off any of the autocompletions in the settings menu. If you prefe
   'cmd-alt-c': 'latexer:insert-citation'
 ```
 
-Latex on Atom
+LaTeX on Atom
 -----------
 
-This package only provides autocompletion. If you want the full latex experience then I would recommend getting the [language-latex](https://atom.io/packages/language-latex) package for syntax highlighting, and the [latex](https://atom.io/packages/latex) or the [latex-plus](https://atom.io/packages/latex-plus) package for compiling latex documents. You can also view pdf documents from within Atom by installing the [pdf-view](https://atom.io/packages/pdf-view) package.
+This package only provides autocompletion. If you want the full LaTeX experience then I would recommend getting the [language-latex](https://atom.io/packages/language-latex) package for syntax highlighting, and the [latex](https://atom.io/packages/latex) or the [latex-plus](https://atom.io/packages/latex-plus) package for compiling LaTeX documents. You can also view pdf documents from within Atom by installing the [pdf-view](https://atom.io/packages/pdf-view) package.
