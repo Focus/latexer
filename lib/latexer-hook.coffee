@@ -44,13 +44,14 @@ module.exports =
       @buffer = null
 
     refCiteCheck: (editor, refOpt, citeOpt, pandocCiteOpt) ->
-      pos = editor.getCursorBufferPosition().toArray()
-      line = editor.getTextInBufferRange([[pos[0], 0], pos])
+      cursor = editor.getCursorBufferPosition()
+      fullLine = editor.lineTextForBufferRow(cursor.row)
+      line = fullLine.slice(0, cursor.column)
       if refOpt and (match = line.match(@refRex))
         @lv.show(editor)
       if citeOpt and (match = line.match(@citeRex))
         @cv.show(editor)
-      if pandocCiteOpt and (pandoc.isPandocStyleCitation(line))
+      if pandocCiteOpt and (pandoc.isPandocStyleCitation(fullLine))
         @cv.show(editor)
 
     environmentCheck: (editor)->

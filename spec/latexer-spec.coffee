@@ -96,11 +96,10 @@ describe "Latexer", ->
         citeText = "[@"
         editor.setText citeText
         advanceClock(editor.getBuffer().getStoppedChangingDelay())
-        spyOn(pandoc, 'isPandocStyleCitation').and.callThrough()
+        spyOn(pandoc, 'isPandocStyleCitation').andCallThrough() #.andCallThrough is old Jasmine 1.3 syntax
         result = pandoc.isPandocStyleCitation(citeText)
+        expect(pandoc.isPandocStyleCitation).toHaveBeenCalledWith(citeText)
         expect(result).toBe true
-        # expect(pandoc.isPandocStyleCitation).toHaveBeenCalledWith('citeText')
-        # expect(result).toBe true
       # it "detects when the user begins a second citation"
 
 
