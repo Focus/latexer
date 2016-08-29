@@ -92,16 +92,15 @@ describe "Latexer", ->
           expect(info[1].textContent).toBe "author#{i}"
 
     describe "When the user begins typing a pandoc-style citation", ->
-      beforeEach ->
-        runs ->
-          spyOn(pandoc, 'isPandocStyleCitation')
-          return
       it "detects the beginning of a citation key", ->
         citeText = "[@"
         editor.setText citeText
         advanceClock(editor.getBuffer().getStoppedChangingDelay())
-        pandoc.isPandocStyleCitation(citeText)
-        expect(pandoc.isPandocStyleCitation).toHaveBeenCalledWith(citeText)
+        spyOn(pandoc, 'isPandocStyleCitation').and.callThrough()
+        result = pandoc.isPandocStyleCitation(citeText)
+        expect(result).toBe true
+        # expect(pandoc.isPandocStyleCitation).toHaveBeenCalledWith('citeText')
+        # expect(result).toBe true
       # it "detects when the user begins a second citation"
 
 
