@@ -4,6 +4,7 @@ CiteView = require '../lib/cite-view'
 Citation = require '../lib/citation'
 FindLabels = require '../lib/find-labels'
 fs = require 'fs-plus'
+pandoc = require '../lib/pandoc-citations'
 
 describe "Latexer", ->
 
@@ -89,6 +90,22 @@ describe "Latexer", ->
           expect(info.length).toBe 2
           expect(info[0].textContent).toBe "title#{i}"
           expect(info[1].textContent).toBe "author#{i}"
+
+    describe "When the user begins typing a pandoc-style citation", ->
+      beforeEach ->
+        runs ->
+          spyOn(pandoc, 'isPandocStyleCitation')
+          return
+      it "detects the beginning of a citation key", ->
+        citeText = "[@"
+        editor.setText citeText
+        advanceClock(editor.getBuffer().getStoppedChangingDelay())
+        pandoc.isPandocStyleCitation(citeText)
+        expect(pandoc.isPandocStyleCitation).toHaveBeenCalledWith(citeText)
+      # it "detects when the user begins a second citation"
+
+
+
 
   describe "typing \\begin{evironment} or \\[", ->
     [workspaceElement, editor] = []
