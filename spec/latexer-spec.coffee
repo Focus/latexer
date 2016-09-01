@@ -93,26 +93,32 @@ describe "Latexer", ->
           expect(info[0].textContent).toBe "title#{i}"
           expect(info[1].textContent).toBe "author#{i}"
 
-    describe "When the user begins a pandoc-style citation", ->
-      it "detects the beginning of a citation key", ->
+    describe "Detecting and auto-completing pandoc-style citations", ->
+      it "detects the beginning of a pandoc-style citation key", ->
         citeText = "[@"
         result = pandoc.isPandocStyleCitation(citeText)
         expect(pandoc.isPandocStyleCitation).toHaveBeenCalledWith(citeText)
         expect(result).toBe true
 
-    describe "When the user begins referencing a second key in a pandoc-style citation", ->
-      it "detects the beginning of the second key", ->
-        citeText = "[@Fallows1997; @"
-        result = pandoc.isPandocStyleCitation(citeText)
-        expect(pandoc.isPandocStyleCitation).toHaveBeenCalledWith(citeText)
-        expect(result).toBe true
+      it "detects the beginning of the Nth key in a citation", ->
+        expect(pandoc.isPandocStyleCitation(
+          "[@Fallows1997; @"
+        )).toBe true
+        expect(pandoc.isPandocStyleCitation(
+          "[@Turing1944; see also @Church1936; @"))
+          .toBe true
+        expect(pandoc.isPandocStyleCitation(
+          "[@Goldberg2014 et al.; @Forbus2014; @Finnegan; @Felber; @"))
+          .toBe true
+        expect(pandoc.isPandocStyleCitation(
+          "[a claim supported by multiple empirical studies [@Elby2001; @Gauss1989; and also @"))
+          .toBe true
 
-    describe "Once the user has inserted a value for key", ->
-      it "Does not treat the text as beginning a key", ->
+      it "Recognizes when the user has NOT yet begun to type/edit a cite key", ->
         citeTexts = [ "[@Fallows1997; "
-            , "[ @Richards2014;"
-            , "[ @Gupta "
-            , "[@Chemler2005 and others; @Suzuki1992; ]"
+                    , "[ @Richards2014;"
+                    , "[ @Gupta "
+                    , "[@Chemler2005 and others; @Suzuki1992; "
         ]
         citeTexts.map(
           (currentValue) ->
