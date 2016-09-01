@@ -65,6 +65,8 @@ describe "Latexer", ->
       runs ->
         spyOn(FindLabels, "getAbsolutePath").andReturn("bibfile.bib")
         spyOn(fs, "readFileSync").andReturn(bibText)
+        spyOn(pandoc, 'isPandocStyleCitation')
+          .andCallThrough() #.andCallThrough is old Jasmine 1.3 syntax
 
     describe "typing \\ref{", ->
       it "shows the labels to select from", ->
@@ -91,19 +93,34 @@ describe "Latexer", ->
           expect(info[0].textContent).toBe "title#{i}"
           expect(info[1].textContent).toBe "author#{i}"
 
-    describe "When the user begins typing a pandoc-style citation", ->
+    describe "When the user begins a pandoc-style citation", ->
       it "detects the beginning of a citation key", ->
         citeText = "[@"
-        editor.setText citeText
-        advanceClock(editor.getBuffer().getStoppedChangingDelay())
-        spyOn(pandoc, 'isPandocStyleCitation').andCallThrough() #.andCallThrough is old Jasmine 1.3 syntax
         result = pandoc.isPandocStyleCitation(citeText)
         expect(pandoc.isPandocStyleCitation).toHaveBeenCalledWith(citeText)
         expect(result).toBe true
-      # it "detects when the user begins a second citation"
 
+    describe "When the user begins referencing a second key in a pandoc-style citation", ->
+      it "detects the beginning of the second key", ->
+        citeText = "[@Fallows1997; @"
+        result = pandoc.isPandocStyleCitation(citeText)
+        expect(pandoc.isPandocStyleCitation).toHaveBeenCalledWith(citeText)
+        expect(result).toBe true
 
-
+    describe "Once the user has inserted a value for key", ->
+      it "Does not treat the text as beginning a key", ->
+        citeTexts = [ "[@Fallows1997; "
+            , "[ @Richards2014;"
+            , "[ @Gupta "
+            , "[@Chemler2005 and others; @Suzuki1992; ]"
+        ]
+        citeTexts.map(
+          (currentValue) ->
+            expect(
+              pandoc.isPandocStyleCitation(currentValue)
+            ).toBe false # FALSE because the user isn't beginning a new cite key yet
+            return
+        )
 
   describe "typing \\begin{evironment} or \\[", ->
     [workspaceElement, editor] = []
