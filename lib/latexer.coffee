@@ -33,7 +33,7 @@ module.exports = Latexer =
     autocomplete_pandoc_markdown_citations:
       description: "For example: [see @doe99, pp. 33-35; also @smith04, chap. 1]"
       type: "boolean"
-      default: true
+      default: false
 
 
 
