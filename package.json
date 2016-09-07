@@ -16,7 +16,8 @@
   },
   "dependencies": {
     "atom-space-pen-views": "^2.0.0",
-    "fs-plus": "^2.0.0"
+    "fs-plus": "^2.0.0",
+    "js-yaml": "^3.6.1"
   },
   "devDependencies": {
     "eslint": "^3.3.1",

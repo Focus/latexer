@@ -3,6 +3,7 @@ Citation = require './citation'
 FindLabels = require './find-labels'
 fs = require 'fs-plus'
 pathModule = require 'path'
+pandoc = require './pandoc-citations'
 
 module.exports =
 class CiteView extends SelectListView
@@ -88,6 +89,9 @@ class CiteView extends SelectListView
         if not /\.bib$/.test(found)
           found += ".bib"
         bibFiles = bibFiles.concat(found)
+    yaml = pandoc.extractYAMLmetadata(text)
+    yamlBibFile = pandoc.getBibfileFromYAML(yaml)
+    bibfiles = bibfiles.concat(yamlBibFile) unless yamlBibFile is undefined
     bibFiles
 
   getCitationsFromPath: (path) ->
