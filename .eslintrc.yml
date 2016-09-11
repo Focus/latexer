@@ -1,3 +1,4 @@
+ecmaVersion: 6
 extends: airbnb
 installedESLint: true
 plugins:
