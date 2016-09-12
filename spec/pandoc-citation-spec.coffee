@@ -46,7 +46,7 @@ describe "getting a bibfile from a YAML metadata block in (R)Markdown files", ->
   it "fails to find a bibfile if the document has no leading YAML block", ->
     fileText = 'This text has no leading YAML block'
     yaml = pandoc.extractYAMLmetadata(fileText)
-    bibFile = pandoc.getBibfileFromYAML(yaml)
+    bibFile = pandoc.getBibfilesFromYAML(yaml)
     expect(yaml).toBe undefined
     expect(bibFile).toBe undefined
 
@@ -64,7 +64,7 @@ describe "getting a bibfile from a YAML metadata block in (R)Markdown files", ->
                """
 
     yaml = pandoc.extractYAMLmetadata(fileText)
-    bibFile = pandoc.getBibfileFromYAML(yaml)
+    bibFile = pandoc.getBibfilesFromYAML(yaml)
     metadata = jsYaml.safeLoad(yaml)
     expect(bibFile).toBe 'batmanVsupermanButNotTheCrappyOne-References.bib'
     expect(metadata.author[0]).toBe 'Joel Coen'
@@ -77,7 +77,7 @@ describe "getting a bibfile from a YAML metadata block in (R)Markdown files", ->
                ...
                """
     yaml = pandoc.extractYAMLmetadata(fileText)
-    bibFile = pandoc.getBibfileFromYAML(yaml)
+    bibFile = pandoc.getBibfilesFromYAML(yaml)
     metadata = jsYaml.safeLoad(yaml)
     expect(metadata.author).toBe "Alan Turing"
     expect(bibFile).toBe undefined
@@ -96,7 +96,7 @@ describe "getting a bibfile from a YAML metadata block in (R)Markdown files", ->
                ...
                """
     yaml = pandoc.extractYAMLmetadata(fileText)
-    bibFile = pandoc.getBibfileFromYAML(yaml)
+    bibFile = pandoc.getBibfilesFromYAML(yaml)
     metadata = jsYaml.safeLoad(yaml)
     expect(bibFile[1]).toBe 'bibfile1.bib'
     expect(bibFile[0]).toBe 'bibfile0.bib'
