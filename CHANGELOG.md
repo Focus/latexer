@@ -1,3 +1,9 @@
+#### Upcoming
+
+* Expanded autocomplete support to include [pandoc-style citations](http://pandoc.org/MANUAL.html#citations) when you're writing in [Markdown](https://guides.github.com/features/mastering-markdown/#syntax) (`.md`) or [Rmarkdown](http://rmarkdown.rstudio.com/) (`.Rmd`).
+* Added support for specifying your bibfile (for citation autocompletion) as part of a [YAML Metadata block](http://pandoc.org/MANUAL.html#extension-yaml_metadata_block)
+* UPDATED README with an example of pandoc citation autocompletion
+
 #### 0.3.0
 * Options to switch off autocompletion
 * Added Atom commands
