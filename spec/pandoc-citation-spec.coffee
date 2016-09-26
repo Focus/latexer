@@ -50,26 +50,6 @@ describe "getting a bibfile from a YAML metadata block in (R)Markdown files", ->
     expect(yaml).toBe undefined
     expect(bibFile).toBe undefined
 
-  it "correctly gets the value of the `bibliography` key", ->
-    fileText = """
-               ---
-               title: "Batman v. Superman: The Good Version"
-               author:
-                 - "Joel Coen"
-                 - "Ethan Coen"
-               bibliography: "batmanVsupermanButNotTheCrappyOne-References.bib"
-               ...
-
-               We open on Metropolis...
-               """
-
-    yaml = pandoc.extractYAMLmetadata(fileText)
-    bibFile = pandoc.getBibfilesFromYAML(yaml)
-    metadata = jsYaml.safeLoad(yaml)
-    expect(bibFile).toBe 'batmanVsupermanButNotTheCrappyOne-References.bib'
-    expect(metadata.author[0]).toBe 'Joel Coen'
-    expect(metadata.title).toBe 'Batman v. Superman: The Good Version'
-
   it "fails to find a bibfile if the YAML block exists but contains no `bibliography` field", ->
     fileText = """
                ---
@@ -81,23 +61,3 @@ describe "getting a bibfile from a YAML metadata block in (R)Markdown files", ->
     metadata = jsYaml.safeLoad(yaml)
     expect(metadata.author).toBe "Alan Turing"
     expect(bibFile).toBe undefined
-
-  it "can handle multiple values for the bibliography key", ->
-    fileText = """
-               ---
-               author:
-                 - "Ada Lovelace"
-                 - "Grace Murray Hopper"
-                 - "Anita Borg"
-               bibliography:
-                 - bibfile0.bib
-                 - bibfile1.bib
-                 - bibfile2.bib
-               ...
-               """
-    yaml = pandoc.extractYAMLmetadata(fileText)
-    bibFile = pandoc.getBibfilesFromYAML(yaml)
-    metadata = jsYaml.safeLoad(yaml)
-    expect(bibFile[1]).toBe 'bibfile1.bib'
-    expect(bibFile[0]).toBe 'bibfile0.bib'
-    expect(metadata.author[2]).toBe 'Anita Borg'
