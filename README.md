@@ -37,13 +37,8 @@ Latexer will automatically scan your document to find your bibfiles. For example
 - Typing `[@` or `[-@` to begin a pandoc-style citation
 - Typing `@` or `-@` after semicolon-delimited references in a pandoc-style citation, for example: `[@ref1; @` and `[@ref3; also see @ref4; @`
 
-<video>
-  <source controls
-          loop
-          height="400"
-          src="screenshots/pandoc-citation-example-edited.mov"
-          type="video/mp4">
-</video>
+<img src="screenshots/pandoc-reference-autocompletion.gif"
+     alt="Typing a square bracket followed by an @ symbol to engage reference autocompletion">
 
 You can edit from the preferences window which parameters you would like to search the bibliographies by. The default is `title,author`, but you can specify whichever search fields you like. For example, `key,year` will search for an entry entries by its key, i.e. `@key{...}` and the year it was published.
 
