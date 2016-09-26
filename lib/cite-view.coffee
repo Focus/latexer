@@ -48,7 +48,7 @@ class CiteView extends SelectListView
   getCitations: ->
     cites = []
     bibFiles = @getBibFiles()
-    for bibFile in bibFiles
+    for bibFile in _.uniq(bibFiles)
       cites = cites.concat(@getCitationsFromPath(bibFile))
     cites
 
@@ -93,7 +93,7 @@ class CiteView extends SelectListView
     yaml = pandoc.extractYAMLmetadata(text)
     yamlBibFiles = pandoc.getBibfilesFromYAML(yaml)
     bibFiles = bibFiles.concat(yamlBibFiles)
-    _.uniq(bibFiles)
+    bibFiles
 
   getCitationsFromPath: (path) ->
     cites = []
