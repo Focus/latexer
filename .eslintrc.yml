@@ -1,9 +1,10 @@
-ecmaVersion: 6
-extends: airbnb
-installedESLint: true
-plugins:
-  - react
-  - jsx-a11y
-  - import
+env:
+  es6: true
+  node: true
+extends: 'eslint:recommended'
 globals:
   atom: true
+rules:
+  semi:
+    - error
+    - always
