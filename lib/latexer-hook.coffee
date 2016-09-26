@@ -55,7 +55,7 @@ module.exports =
         @lv.show(editor)
       if citeOpt and (match = line.match(@citeRex))
         @cv.show(editor)
-      if pandocCiteOpt and (pandoc.isPandocStyleCitation(line))
+      if pandocCiteOpt and pandoc.isPandocStyleCitation(line)
         @cv.show(editor)
 
     environmentCheck: (editor)->
