@@ -65,8 +65,6 @@ describe "Latexer", ->
       runs ->
         spyOn(FindLabels, "getAbsolutePath").andReturn("bibfile.bib")
         spyOn(fs, "readFileSync").andReturn(bibText)
-        spyOn(pandoc, 'isPandocStyleCitation')
-          .andCallThrough() #.andCallThrough is old Jasmine 1.3 syntax
 
     describe "typing \\ref{", ->
       it "shows the labels to select from", ->
@@ -92,41 +90,6 @@ describe "Latexer", ->
           expect(info.length).toBe 2
           expect(info[0].textContent).toBe "title#{i}"
           expect(info[1].textContent).toBe "author#{i}"
-
-    describe "Detecting and auto-completing pandoc-style citations", ->
-      it "detects the beginning of a pandoc-style citation key", ->
-        citeText = "[@"
-        result = pandoc.isPandocStyleCitation(citeText)
-        expect(pandoc.isPandocStyleCitation).toHaveBeenCalledWith(citeText)
-        expect(result).toBe true
-
-      it "detects the beginning of the Nth key in a citation", ->
-        expect(pandoc.isPandocStyleCitation(
-          "[@Fallows1997; @"
-        )).toBe true
-        expect(pandoc.isPandocStyleCitation(
-          "[@Turing1944; see also @Church1936; @"))
-          .toBe true
-        expect(pandoc.isPandocStyleCitation(
-          "[@Goldberg2014 et al.; @Forbus2014; @Finnegan; @Felber; @"))
-          .toBe true
-        expect(pandoc.isPandocStyleCitation(
-          "[a claim supported by multiple empirical studies [@Elby2001; @Gauss1989; and also @"))
-          .toBe true
-
-      it "Recognizes when the user has NOT yet begun to type/edit a cite key", ->
-        citeTexts = [ "[@Fallows1997; "
-                    , "[ @Richards2014;"
-                    , "[ @Gupta "
-                    , "[@Chemler2005 and others; @Suzuki1992; "
-        ]
-        citeTexts.map(
-          (currentValue) ->
-            expect(
-              pandoc.isPandocStyleCitation(currentValue)
-            ).toBe false # FALSE because the user isn't beginning a new cite key yet
-            return
-        )
 
   describe "typing \\begin{evironment} or \\[", ->
     [workspaceElement, editor] = []
