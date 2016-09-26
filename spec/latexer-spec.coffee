@@ -4,7 +4,6 @@ CiteView = require '../lib/cite-view'
 Citation = require '../lib/citation'
 FindLabels = require '../lib/find-labels'
 fs = require 'fs-plus'
-pandoc = require '../lib/pandoc-citations'
 
 describe "Latexer", ->
 
