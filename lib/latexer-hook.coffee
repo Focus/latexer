@@ -30,7 +30,7 @@ module.exports =
       @unsubscribeBuffer()
       return unless @editor?
       title = @editor?.getTitle()
-      return unless title? and title.match(/\.tex$/)
+      return unless title? and title.match(/\.tex|[rs]nw$/i)
       @buffer = @editor.getBuffer()
       @disposableBuffer = @buffer.onDidStopChanging => @editorHook()
 
