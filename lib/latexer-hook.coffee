@@ -34,9 +34,9 @@ module.exports =
 
       return unless title? and (
         title.match(/\.tex$/) or
-        title.match(/\.md$/) or # also match Markdown
-        title.match(/\.Rmd$/)   #   and RMarkdown files
-        title.match(/\.[rs]nw$/) # Knitr/Sweeve
+        title.match(/\.md$/) or  # also match Markdown,
+        title.match(/\.Rmd$/)    # RMarkdown,
+        title.match(/\.[rs]nw$/) # and Knitr/Sweave files
       )
       @buffer = @editor.getBuffer()
       @disposableBuffer = @buffer.onDidStopChanging => @editorHook()
