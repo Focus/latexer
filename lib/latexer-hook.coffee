@@ -31,10 +31,12 @@ module.exports =
       @unsubscribeBuffer()
       return unless @editor?
       title = @editor?.getTitle()
+
       return unless title? and (
         title.match(/\.tex$/) or
         title.match(/\.md$/) or # also match Markdown
         title.match(/\.Rmd$/)   #   and RMarkdown files
+        title.match(/\.[rs]nw$/) # Knitr/Sweeve
       )
       @buffer = @editor.getBuffer()
       @disposableBuffer = @buffer.onDidStopChanging => @editorHook()
