@@ -1,6 +1,7 @@
 {CompositeDisposable} = require 'atom'
 LabelView = require './label-view'
 CiteView = require './cite-view'
+pandoc = require './pandoc-citations'
 
 module.exports =
   class LatexerHook
@@ -30,7 +31,13 @@ module.exports =
       @unsubscribeBuffer()
       return unless @editor?
       title = @editor?.getTitle()
-      return unless title? and title.match(/\.tex|[rs]nw$/i)
+
+      return unless title? and (
+        title.match(/\.tex$/) or
+        title.match(/\.md$/) or # also match Markdown
+        title.match(/\.Rmd$/)   #   and RMarkdown files
+        title.match(/\.[rs]nw$/) # Knitr/Sweeve
+      )
       @buffer = @editor.getBuffer()
       @disposableBuffer = @buffer.onDidStopChanging => @editorHook()
 
@@ -38,12 +45,19 @@ module.exports =
       @disposableBuffer?.dispose()
       @buffer = null
 
-    refCiteCheck: (editor, refOpt, citeOpt)->
-      pos = editor.getCursorBufferPosition().toArray()
-      line = editor.getTextInBufferRange([[pos[0], 0], pos])
+    refCiteCheck: (editor, refOpt, citeOpt, pandocCiteOpt) ->
+      cursor = editor.getCursorBufferPosition()
+      line = editor.getTextInBufferRange(
+        [
+          [cursor.row, 0],
+          [cursor.row, cursor.column]
+        ]
+      )
       if refOpt and (match = line.match(@refRex))
         @lv.show(editor)
       if citeOpt and (match = line.match(@citeRex))
+        @cv.show(editor)
+      if pandocCiteOpt and pandoc.isPandocStyleCitation(line)
         @cv.show(editor)
 
     environmentCheck: (editor)->
@@ -80,5 +94,6 @@ module.exports =
       envOpt = atom.config.get "latexer.autocomplete_environments"
       refOpt = atom.config.get "latexer.autocomplete_references"
       citeOpt = atom.config.get "latexer.autocomplete_citations"
-      @refCiteCheck(editor, refOpt, citeOpt) if refOpt or citeOpt
+      pandocCiteOpt = atom.config.get "latexer.autocomplete_pandoc_markdown_citations"
+      @refCiteCheck(editor, refOpt, citeOpt, pandocCiteOpt) if refOpt or citeOpt or pandocCiteOpt
       @environmentCheck(editor) if envOpt
