@@ -23,7 +23,8 @@ class LabelView extends SelectListView
         text = fs.readFileSync(absolutFilePath).toString()
         labels = FindLabels.getLabelsByText(text, absolutFilePath)
       catch error
-        atom.notifications.addError('could not load content of '+ absolutFilePath, { dismissable: true })
+        errmsg = 'could not load content of #{absolutFilePath}'
+        atom.notifications.addError(errmsg, { dismissable: true })
         console.log(error)
     if labels == undefined or labels.length == 0
       labels = FindLabels.getLabelsByText(@editor.getText(), basePath)
@@ -43,7 +44,7 @@ class LabelView extends SelectListView
     "label"
 
   viewForItem: ({label}) ->
-     "<li>#{label}</li>"
+    "<li>#{label}</li>"
 
   confirmed: ({label}) ->
     @editor.insertText label

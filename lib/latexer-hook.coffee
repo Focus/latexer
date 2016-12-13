@@ -79,10 +79,16 @@ module.exports =
       else
         return
       lineCount = editor.getLineCount()
-      preText= editor.getTextInBufferRange([[0,0], [pos[0],0]]).replace /%.+$/gm,""
-      remainingText = editor.getTextInBufferRange([[pos[0],0],[lineCount+1,0]]).replace /%.+$/gm,""
-      balanceBefore = (preText.match(beginTextRex)||[]).length - (preText.match(endTextRex)||[]).length
-      balanceAfter = (remainingText.match(beginTextRex)||[]).length - (remainingText.match(endTextRex)||[]).length
+      preText= editor.getTextInBufferRange([[0,0], [pos[0],0]])
+                      .replace /%.+$/gm,""
+      remainingText = editor.getTextInBufferRange([[pos[0],0],[lineCount+1,0]])
+                            .replace /%.+$/gm,""
+      open = (preText.match(beginTextRex)||[]).length
+      closed = (preText.match(endTextRex)||[]).length
+      balanceBefore = open - closed
+      open = (remainingText.match(beginTextRex)||[]).length
+      closed = (remainingText.match(endTextRex)||[]).length
+      balanceAfter = open - closed
       return if balanceBefore + balanceAfter < 1
       posBefore = editor.getCursorBufferPosition()
       editor.insertText endText
@@ -94,6 +100,6 @@ module.exports =
       envOpt = atom.config.get "latexer.autocomplete_environments"
       refOpt = atom.config.get "latexer.autocomplete_references"
       citeOpt = atom.config.get "latexer.autocomplete_citations"
-      pandocCiteOpt = atom.config.get "latexer.autocomplete_pandoc_markdown_citations"
-      @refCiteCheck(editor, refOpt, citeOpt, pandocCiteOpt) if refOpt or citeOpt or pandocCiteOpt
+      pOpt = atom.config.get "latexer.autocomplete_pandoc_markdown_citations"
+      @refCiteCheck(editor, refOpt, citeOpt, pOpt) if refOpt or citeOpt or pOpt
       @environmentCheck(editor) if envOpt

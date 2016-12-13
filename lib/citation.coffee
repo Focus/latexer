@@ -39,7 +39,8 @@ class Citation
     it = text.indexOf("{") + 1
     return if it is 0
     text = text.substring(it)
-    #We first strip the bib entry into the bit in between @{...} as there may be comments outside
+    #We first strip the bib entry into the bit
+    #in between @{...}  as there may be comments outside
     balance = 1
     for ch, i in text
       balance++ if ch is '{'
@@ -60,7 +61,7 @@ class Citation
       content = item.substring(eq+1)
       qInd = content.indexOf("\"")
       bInd = content.indexOf("{")
-      continue if ((qInd < 0) and (bInd < 0)) #or (qInd > content.length()-1) or (bInd > content.length()-1)
+      continue if ((qInd < 0) and (bInd < 0))
       if (qInd isnt -1 and qInd < bInd) or (bInd is -1)
         content = content.substring(qInd+1)
         term = "\""

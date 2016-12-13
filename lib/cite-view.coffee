@@ -32,7 +32,10 @@ class CiteView extends SelectListView
     "filterKey"
 
   viewForItem: ({title, key, author}) ->
-    "<li><span style='display:block;'>#{title}</span><span style='display:block;font-size:xx-small;'>#{author}</span></li>"
+    """
+    <li><span style='display:block;'>#{title}</span>
+    <span style='display:block;font-size:xx-small;'>#{author}</span></li>
+    """
 
   hide: ->
     @panel?.hide()
@@ -63,15 +66,18 @@ class CiteView extends SelectListView
     if bibFiles == null or bibFiles.length == 0
       texRootRex = /%(\s+)?!TEX root(\s+)?=(\s+)?(.+)/g
       while(match = texRootRex.exec(@editor.getText()))
-        absolutFilePath = FindLabels.getAbsolutePath(activePaneItemPath,match[4])
+        absolutFilePath =
+          FindLabels.getAbsolutePath(activePaneItemPath,match[4])
         basePath = pathModule.dirname(absolutFilePath)
         try
           text = fs.readFileSync(absolutFilePath).toString()
-          bibFiles = @getBibFileFromText(text) #todo append basePath to each BibFiles in
+          #todo append basePath to each BibFiles in
+          bibFiles = @getBibFileFromText(text)
           if bibFiles != null and bibFiles.length != 0
             break
         catch error
-          atom.notifications.addError('could not load content '+ match[4], { dismissable: true })
+          atom.notifications.addError('could not load content '+ match[4],
+                                        {dismissable: true })
           console.log(error)
     result = []
     basePath = basePath + pathModule.sep
@@ -100,8 +106,8 @@ class CiteView extends SelectListView
     text = null
     try text = fs.readFileSync(path).toString()
     catch error
-       console.log(error)
-       return []
+      console.log(error)
+      return []
     return [] unless text?
     text = text.replace(/(\r\n|\n|\r)/gm,"")
     textSplit = text.split("@")
@@ -113,5 +119,9 @@ class CiteView extends SelectListView
       filter = ""
       for key in atom.config.get("latexer.parameters_to_search_citations_by")
         filter += ct.get(key) + " "
-      cites.push({title: ct.get("title"), key: ct.get("key"), author: ct.get("author"), filterKey: filter})
+      cites.push({
+        title: ct.get("title"),
+        key: ct.get("key"),
+        author: ct.get("author"),
+        filterKey: filter})
     cites
