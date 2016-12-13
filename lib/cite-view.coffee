@@ -98,7 +98,8 @@ class CiteView extends SelectListView
         bibFiles = bibFiles.concat(found)
     yaml = pandoc.extractYAMLmetadata(text)
     yamlBibFiles = pandoc.getBibfilesFromYAML(yaml)
-    bibFiles = bibFiles.concat(yamlBibFiles)
+    if yamlBibFiles is not null
+      bibFiles = bibFiles.concat(yamlBibFiles)
     bibFiles
 
   getCitationsFromPath: (path) ->
