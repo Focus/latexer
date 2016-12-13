@@ -24,7 +24,7 @@ describe "Detecting and auto-completing pandoc-style citations", ->
       "[@Goldberg2014 et al.; @Forbus2014; @Finnegan; @Felber; @"))
       .toBe true
     expect(pandoc.isPandocStyleCitation(
-      "[a claim supported by multiple empirical studies [@Elby2001; @Gauss1989; and also @"))
+      "[a claim supported by [@Elby2001; @Gauss1989; and also @"))
       .toBe true
 
   it "Recognizes when the user has NOT yet begun to type/edit a cite key", ->
@@ -50,7 +50,10 @@ describe "getting a bibfile from a YAML metadata block in (R)Markdown files", ->
     expect(yaml).toBe undefined
     expect(bibFile).toBe undefined
 
-  it "fails to find a bibfile if the YAML block exists but contains no `bibliography` field", ->
+  it """
+  fails to find a bibfile if the YAML block exists,
+  but contains no `bibliography` field
+  """, ->
     fileText = """
                ---
                author: "Alan Turing"
