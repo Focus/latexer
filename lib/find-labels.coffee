@@ -12,7 +12,8 @@ FindLabels =
     return matches unless baseFile?
     inputRex = /\\(input|include){([^}]+)}/g
     while (match = inputRex.exec(text))
-      matches = matches.concat(@getLabels(@getAbsolutePath(baseFile, match[2]), baseFile))
+      matches = matches.concat(
+        @getLabels(@getAbsolutePath(baseFile, match[2]), baseFile))
     matches
 
   getLabels: (file, baseFile) ->
