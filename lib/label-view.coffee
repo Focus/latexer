@@ -18,10 +18,8 @@ class LabelView extends SelectListView
     file = editor?.buffer?.file
     basePath = file?.path
     activePaneItemPath = basePath
-   #  texRootRex = /%!TEX root = (.+)/g
     texRootRex = /%(\s+)?!TEX root(\s+)?=(\s+)?(.+)/g
     while(match = texRootRex.exec(@editor.getText()))
-      # absolutFilePath = FindLabels.getAbsolutePath(basePath,match[1])
       absolutFilePath = FindLabels.getAbsolutePath(activePaneItemPath,match[4])
       basePath = pathModule.dirname(absolutFilePath)
       try
