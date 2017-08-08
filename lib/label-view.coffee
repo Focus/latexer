@@ -1,7 +1,9 @@
 {$,SelectListView} = require 'atom-space-pen-views'
 FindLabels = require './find-labels'
+ListLabels = require './list-labels'
 fs = require 'fs-plus'
 pathModule = require 'path'
+listFiles = require('./list-files')
 
 module.exports =
 class LabelView extends SelectListView
@@ -22,14 +24,7 @@ class LabelView extends SelectListView
     while(match = texRootRex.exec(@editor.getText()))
       absolutFilePath = FindLabels.getAbsolutePath(activePaneItemPath,match[4])
       basePath = pathModule.dirname(absolutFilePath)
-      try
-        text = fs.readFileSync(absolutFilePath).toString()
-        labels = FindLabels.getLabelsByText(text, absolutFilePath)
-      catch error
-        atom.notifications.addError('could not load content of '+ absolutFilePath, { dismissable: true })
-        console.log(error)
-    if labels == undefined or labels.length == 0
-      labels = FindLabels.getLabelsByText(@editor.getText(), basePath)
+      labels = ListLabels.fromDir(basePath, /\.tex$/);
     @setItems(labels)
     @panel ?= atom.workspace.addModalPanel(item: this)
     @panel.show()
