@@ -3,7 +3,6 @@ FindLabels = require './find-labels'
 ListLabels = require './list-labels'
 fs = require 'fs-plus'
 pathModule = require 'path'
-listFiles = require('./list-files')
 
 module.exports =
 class LabelView extends SelectListView
