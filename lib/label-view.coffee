@@ -23,7 +23,7 @@ class LabelView extends SelectListView
     while(match = texRootRex.exec(@editor.getText()))
       absolutFilePath = FindLabels.getAbsolutePath(activePaneItemPath,match[4])
       basePath = pathModule.dirname(absolutFilePath)
-      labels = ListLabels.fromDir(basePath, /\.tex$/)
+      labels = ListLabels.fromDir(basePath, /\.tex$/);
     @setItems(labels)
     @panel ?= atom.workspace.addModalPanel(item: this)
     @panel.show()
@@ -40,7 +40,7 @@ class LabelView extends SelectListView
     "label"
 
   viewForItem: ({label}) ->
-    "<li>#{label}</li>"
+     "<li>#{label}</li>"
 
   confirmed: ({label}) ->
     @editor.insertText label
