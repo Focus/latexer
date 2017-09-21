@@ -1,8 +1,6 @@
 {$,SelectListView} = require 'atom-space-pen-views'
 FindLabels = require './find-labels'
-ListLabels = require './list-labels'
 fs = require 'fs-plus'
-pathModule = require 'path'
 
 module.exports =
 class LabelView extends SelectListView
@@ -18,12 +16,18 @@ class LabelView extends SelectListView
     @editor = editor
     file = editor?.buffer?.file
     basePath = file?.path
-    activePaneItemPath = basePath
-    texRootRex = /%(\s+)?!TEX root(\s+)?=(\s+)?(.+)/g
+    texRootRex = /%!TEX root = (.+)/g
     while(match = texRootRex.exec(@editor.getText()))
-      absolutFilePath = FindLabels.getAbsolutePath(activePaneItemPath,match[4])
-      basePath = pathModule.dirname(absolutFilePath)
-      labels = ListLabels.fromDir(basePath, /\.tex$/);
+      absolutFilePath = FindLabels.getAbsolutePath(basePath,match[1])
+      try
+        text = fs.readFileSync(absolutFilePath).toString()
+        labels = FindLabels.getLabelsByText(text, absolutFilePath)
+      catch error
+        errmsg = 'could not load content of #{absolutFilePath}'
+        atom.notifications.addError(errmsg, { dismissable: true })
+        console.log(error)
+    if labels == undefined or labels.length == 0
+      labels = FindLabels.getLabelsByText(@editor.getText(), basePath)
     @setItems(labels)
     @panel ?= atom.workspace.addModalPanel(item: this)
     @panel.show()
@@ -40,7 +44,7 @@ class LabelView extends SelectListView
     "label"
 
   viewForItem: ({label}) ->
-     "<li>#{label}</li>"
+    "<li>#{label}</li>"
 
   confirmed: ({label}) ->
     @editor.insertText label
