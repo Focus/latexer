@@ -8,7 +8,7 @@ module.exports =
     beginRex: /\\begin{([^}]+)}/
     mathRex: /(\\+)\[/
     refRex: /\\(\w*ref({|{[^}]+,)|[cC](page)?refrange({[^,}]*})?{)$/
-    citeRex: /\\\w*(cite|citet|citep|citet\*|citep\*)(\[[^\]]+\])?({|{[^}]+,)$/
+    citeRex: /\\\w*(auto)?(cite|citet|citep|citet\*|citep\*)(\[[^\]]+\])?({|{[^}]+,)$/
     constructor: (@editor) ->
       @disposables = new CompositeDisposable
       @disposables.add @editor.onDidChangeTitle => @subscribeBuffer()
