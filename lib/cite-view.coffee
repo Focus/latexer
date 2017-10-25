@@ -33,8 +33,11 @@ class CiteView extends SelectListView
 
   viewForItem: ({title, key, author}) ->
     """
-    <li><span style='display:block;'>#{title}</span>
-    <span style='display:block;font-size:xx-small;'>#{author}</span></li>
+      <li>
+        <span class='cite-view-title'>#{title}</span>
+        <span class='cite-view-key'>#{key}</span>
+        <span class='cite-view-author'>#{author}</span>
+      </li>
     """
 
   hide: ->
