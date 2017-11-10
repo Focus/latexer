@@ -8,12 +8,14 @@ module.exports =
     beginRex: /\\begin{([^}]+)}/
     mathRex: /(\\+)\[/
     refRex: /\\(\w*ref({|{[^}]+,)|[cC](page)?refrange({[^,}]*})?{)$/
-    citeRex: /\\\w*(cite|citet|citep|citet\*|citep\*)(\[[^\]]+\])?({|{[^}]+,)$/
     constructor: (@editor) ->
       @disposables = new CompositeDisposable
       @disposables.add @editor.onDidChangeTitle => @subscribeBuffer()
       @disposables.add @editor.onDidChangePath => @subscribeBuffer()
       @disposables.add @editor.onDidSave => @subscribeBuffer()
+
+      @oldKeys = []
+      @buildCiteRex()
 
       @disposables.add @editor.onDidDestroy(@destroy.bind(this))
       @subscribeBuffer()
@@ -55,10 +57,20 @@ module.exports =
       )
       if refOpt and (match = line.match(@refRex))
         @lv.show(editor)
+      @buildCiteRex()
       if citeOpt and (match = line.match(@citeRex))
         @cv.show(editor)
       if pandocCiteOpt and pandoc.isPandocStyleCitation(line)
         @cv.show(editor)
+
+    buildCiteRex: ->
+      curKeys = atom.config.get("latexer.autocomplete_citations_by")
+      if @oldKeys != curKeys
+        citeFilter = "\\\\\\w*("
+        citeFilter += curKeys.join("|").replace(/\*/g, "\\*")
+        citeFilter += ")(\\[[^\\]]+\\])?({|{[^}]+,)$"
+        @citeRex = RegExp(citeFilter)
+        @oldKeys = curKeys
 
     environmentCheck: (editor)->
       pos = editor.getCursorBufferPosition().toArray()
