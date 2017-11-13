@@ -32,6 +32,12 @@ module.exports = Latexer =
       type: "boolean"
       default: true
 
+    autocomplete_references_by:
+      type: "array"
+      default: ["ref"]
+      items:
+        type: "string"
+
     autocomplete_citations:
       type: "boolean"
       default: true

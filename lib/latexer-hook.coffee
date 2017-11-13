@@ -7,15 +7,16 @@ module.exports =
   class LatexerHook
     beginRex: /\\begin{([^}]+)}/
     mathRex: /(\\+)\[/
-    refRex: /\\(\w*ref({|{[^}]+,)|[cC](page)?refrange({[^,}]*})?{)$/
     constructor: (@editor) ->
       @disposables = new CompositeDisposable
       @disposables.add @editor.onDidChangeTitle => @subscribeBuffer()
       @disposables.add @editor.onDidChangePath => @subscribeBuffer()
       @disposables.add @editor.onDidSave => @subscribeBuffer()
 
-      @oldKeys = []
+      @oldCiteKeys = []
       @buildCiteRex()
+      @oldRefKeys = []
+      @buildRefRex()
 
       @disposables.add @editor.onDidDestroy(@destroy.bind(this))
       @subscribeBuffer()
@@ -55,6 +56,7 @@ module.exports =
           [cursor.row, cursor.column]
         ]
       )
+      @buildRefRex()
       if refOpt and (match = line.match(@refRex))
         @lv.show(editor)
       @buildCiteRex()
@@ -65,12 +67,21 @@ module.exports =
 
     buildCiteRex: ->
       curKeys = atom.config.get("latexer.autocomplete_citations_by")
-      if @oldKeys != curKeys
+      if @oldCiteKeys != curKeys
         citeFilter = "\\\\\\w*("
         citeFilter += curKeys.join("|").replace(/\*/g, "\\*")
         citeFilter += ")(\\[[^\\]]+\\])?({|{[^}]+,)$"
         @citeRex = RegExp(citeFilter)
-        @oldKeys = curKeys
+        @oldCiteKeys = curKeys
+
+    buildRefRex: ->
+      curRefs = atom.config.get("latexer.autocomplete_references_by")
+      if @oldRefKeys != curRefs
+        refFilter = "\\\\(\\w*("
+        refFilter += curRefs.join("|").replace(/\*/g, "\\*")
+        refFilter += ")({|{[^}]+,)|[cC](page)?refrange({[^,}]*})?{)$"
+        @refRex = RegExp(refFilter)
+        @oldRefKeys = curRefs
 
     environmentCheck: (editor)->
       pos = editor.getCursorBufferPosition().toArray()
