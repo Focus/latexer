@@ -70,7 +70,7 @@ module.exports =
       if @oldCiteKeys != curKeys
         citeFilter = "\\\\\\w*("
         citeFilter += curKeys.join("|").replace(/\*/g, "\\*")
-        citeFilter += ")(\\[[^\\]]+\\])?({|{[^}]+,)$"
+        citeFilter += ")(\\[[^\\]]*\\]){0,2}({|{[^}]+,)$"
         @citeRex = RegExp(citeFilter)
         @oldCiteKeys = curKeys
 
