@@ -13,6 +13,7 @@ Features
 Triggers:
   * Typing in `\ref{`, `\eqref{` or any control sequences that ends in `ref{`
   * Deleting anything so that the left of the cursor reads `\ref{`, `\eqref{`, and the like. E.g. deleting the word 'something' from `\pageref{something}`
+  * Custom Triggers can be added via settings
 
 ### Bibliography and citation autocompletion
 
@@ -29,8 +30,9 @@ Latexer will automatically scan your document to find your bibfiles. For example
 
 ##### LaTeX Triggers
 
-  * Typing in `\cite{`, `\textcite{`, `\citet{`, `\citet*{`, `\citep{` or `\citep*{`. You can also write something in square brackets before, e.g. `\cite[Theorem 1]{`.
+  * Typing in `\cite{`, `\citet{`, `\citet*{`, `\citep{`, `\citep*{`, or any control sequences that end in `cite{`. You can also write something in square brackets before, e.g. `\cite[Theorem 1]{` or `\cite[See:][Page 51-59]{`
   * Deleting anything so that the left of the cursor reads `\cite{`, `\textcite{`, `\citet{`, `\citet*{`, `\citep{` or `\citep*{`, e.g. deleting the word 'something' from `\cite{something}`
+  * Custom Triggers can be added via settings
 
 ##### [Pandoc-style Citation][1] Triggers
 

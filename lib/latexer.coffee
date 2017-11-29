@@ -18,6 +18,12 @@ module.exports = Latexer =
       items:
         type: "string"
 
+    autocomplete_citations_by:
+      type: "array"
+      default: ["cite", "citet", "citep", "citet*", "citep*"]
+      items:
+        type: "string"
+
     autocomplete_environments:
       type: "boolean"
       default: true
@@ -25,6 +31,12 @@ module.exports = Latexer =
     autocomplete_references:
       type: "boolean"
       default: true
+
+    autocomplete_references_by:
+      type: "array"
+      default: ["ref"]
+      items:
+        type: "string"
 
     autocomplete_citations:
       type: "boolean"
