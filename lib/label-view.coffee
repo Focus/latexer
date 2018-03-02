@@ -16,9 +16,9 @@ class LabelView extends SelectListView
     @editor = editor
     file = editor?.buffer?.file
     basePath = file?.path
-    texRootRex = /%!TEX root = (.+)/g
+    texRootRex = /%(\s+)?!TEX root(\s+)?=(\s+)?(.+)/gi
     while(match = texRootRex.exec(@editor.getText()))
-      absolutFilePath = FindLabels.getAbsolutePath(basePath,match[1])
+      absolutFilePath = FindLabels.getAbsolutePath(basePath,match[4])
       try
         text = fs.readFileSync(absolutFilePath).toString()
         labels = FindLabels.getLabelsByText(text, absolutFilePath)
