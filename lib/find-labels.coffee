@@ -16,7 +16,8 @@ FindLabels =
         @getLabels(@getAbsolutePath(baseFile, match[2]), baseFile))
     inputRex = /\\(subimport){([^}]+)}{([^}]+)}/g
     while (match = inputRex.exec(text))
-      matches = matches.concat(@getLabels(@getAbsolutePath(baseFile, match[2]+match[3]), baseFile))
+      matches = matches.concat(@getLabels(
+        @getAbsolutePath(baseFile, match[2]+match[3]), baseFile))
     matches
 
   getLabels: (file, baseFile) ->
