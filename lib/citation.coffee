@@ -71,5 +71,5 @@ class Citation
       termInd = content.lastIndexOf(term)
       continue if termInd < 0
       content = content.substring(0, termInd)
-      content = content.replace(/\s+/g," ")
+      content = content.replace(/\s+/g," ").replace(/{/g,"").replace(/}/g,"")
       @properties.push({name: name, content: content})

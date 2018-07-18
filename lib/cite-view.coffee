@@ -64,7 +64,7 @@ class CiteView extends SelectListView
       basePath = basePath.substring 0, basePath.lastIndexOf(pathModule.sep)
     bibFiles = @getBibFileFromText(@editor.getText())
     if bibFiles == null or bibFiles.length == 0
-      texRootRex = /%(\s+)?!TEX root(\s+)?=(\s+)?(.+)/g
+      texRootRex = /%(\s+)?!TEX root(\s+)?=(\s+)?(.+)/gi
       while(match = texRootRex.exec(@editor.getText()))
         absolutFilePath =
           FindLabels.getAbsolutePath(activePaneItemPath,match[4])
